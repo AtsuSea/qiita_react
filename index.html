@@ -11,9 +11,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
     <script type="text/babel">
 
+      function Greeting(props){
+        return (<div>Hello {props.name}!!</div>);
+      }
+
       class Hello extends React.Component {
+        constructor(props){
+          super(props);
+          this.state = {
+            name: '赤羽根健二',
+            name_list:[]
+          }
+        }
+
+        handleNameChange(name){
+          this.setState({name:name})
+        }
+
+        handleClick(){
+          let {name_list,name} = this.state
+          if (name != ""){
+            name_list = name_list.concat(name)
+            this.setState({name_list:name_list,name:""})
+          }
+        }
+
+
         render(){
-          return (<div>Hello React class!!</div>);
+          return (
+            <div>
+              {/*
+                valueはstateの情報を使う、onChangeで値が変わった時の関数を定義
+              */}
+              <input
+                type="text"
+                value={this.state.name}
+                onChange={e => this.handleNameChange(e.target.value)}
+              />
+              <button onClick={() => this.handleClick()}>追加</button>
+              <Greeting name={this.state.name} />
+              <ul>
+                {this.state.name_list.map((name_list) => {
+                   return <li key={name_list}>{name_list}</li >
+                 })
+                }
+              </ul>
+
+            </div>
+          );
         }
       }
 
@@ -21,7 +66,7 @@
         <Hello />,
         document.getElementById('content')
       );
-      
+
     </script>
   </body>
 </html>
